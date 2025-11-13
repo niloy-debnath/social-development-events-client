@@ -4,39 +4,52 @@ import EventCard from "../components/EventCard";
 const UpcomingEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
-  // ✅ Fetch data from backend when the component loads
+  const fetchEvents = async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams();
+      if (search.trim()) params.append("search", search.trim());
+
+      const response = await fetch(
+        `http://localhost:5000/events?${params.toString()}`
+      );
+      const data = await response.json();
+
+      if (Array.isArray(data)) setEvents(data);
+      else console.error("Unexpected response:", data);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/events");
-        const data = await response.json();
-
-        if (Array.isArray(data)) {
-          setEvents(data);
-        } else {
-          console.error("Unexpected response:", data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch events:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchEvents();
-  }, []);
+  }, [search]);
 
-  // ✅ Filter only upcoming (future) events
   const today = new Date();
   const upcoming = events.filter((e) => new Date(e.date) >= today);
 
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-10">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-8">
           Upcoming Events
         </h2>
+
+        {/* ✅ Search */}
+        <div className="flex justify-center mb-10">
+          <input
+            type="text"
+            placeholder="Search events by name..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="border border-gray-300 rounded-lg p-2 w-full max-w-md focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
 
         {loading ? (
           <p className="text-center text-gray-600">Loading events...</p>
