@@ -1,4 +1,3 @@
-// src/pages/Auth/Login.jsx
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
@@ -7,41 +6,31 @@ import { toast } from "react-toastify";
 const Login = () => {
   const { login, googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
-  const validatePassword = (pwd) => {
-    const hasUpper = /[A-Z]/.test(pwd);
-    const hasLower = /[a-z]/.test(pwd);
-    const longEnough = pwd.length >= 6;
-    return hasUpper && hasLower && longEnough;
-  };
+  const validatePassword = (pwd) =>
+    /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && pwd.length >= 6;
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.email || !form.password) {
-      toast.error("Please fill both email and password.");
-      return;
-    }
-    if (!validatePassword(form.password)) {
-      toast.error(
-        "Password must have uppercase, lowercase and be at least 6 characters."
+    if (!form.email || !form.password)
+      return toast.error("Fill email & password.");
+    if (!validatePassword(form.password))
+      return toast.error(
+        "Password must have uppercase, lowercase, and min 6 characters."
       );
-      return;
-    }
 
     try {
       setLoading(true);
       await login(form.email, form.password);
       toast.success("Logged in successfully!");
-      navigate("/upcoming-events"); // redirect after login
+      navigate("/");
     } catch (err) {
-      console.error(err);
-      toast.error(err?.message || "Login failed. Check your credentials.");
+      toast.error(err?.message || "Login failed.");
     } finally {
       setLoading(false);
     }
@@ -54,7 +43,6 @@ const Login = () => {
       toast.success("Logged in with Google!");
       navigate("/upcoming-events");
     } catch (err) {
-      console.error(err);
       toast.error("Google login failed.");
     } finally {
       setLoading(false);
@@ -70,40 +58,28 @@ const Login = () => {
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none"
-              placeholder="At least 6 characters, include Upper & lower case"
-            />
-          </div>
-
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
+            className="w-full bg-blue-500 text-white p-2 rounded"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
@@ -117,19 +93,19 @@ const Login = () => {
 
         <button
           onClick={handleGoogle}
-          className="w-full flex items-center justify-center gap-3 border border-gray-200 py-2 rounded-lg hover:bg-gray-50 transition"
+          className="w-full flex items-center justify-center gap-3 border border-gray-200 p-2 rounded"
         >
           <img
             src="https://www.svgrepo.com/show/355037/google.svg"
             alt="Google"
             className="w-5 h-5"
           />
-          <span className="text-sm font-medium">Continue with Google</span>
+          <span>Continue with Google</span>
         </button>
 
         <p className="text-sm text-gray-500 mt-4 text-center">
-          Don&apos;t have an account?{" "}
-          <Link to="/register" className="text-blue-500 hover:underline">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-blue-500">
             Register
           </Link>
         </p>

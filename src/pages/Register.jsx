@@ -1,54 +1,39 @@
-// src/pages/Auth/Register.jsx
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router";
-import { toast } from "react-toastify";
 import { AuthContext } from "../Context/AuthContext";
+import { toast } from "react-toastify";
 
 const Register = () => {
-  const { register } = useContext(AuthContext); // register function in AuthContext
+  const { register } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const [form, setForm] = useState({
     name: "",
     email: "",
-    photoURL: "",
     password: "",
+    photoURL: "",
   });
   const [loading, setLoading] = useState(false);
 
-  const validatePassword = (pwd) => {
-    const hasUpper = /[A-Z]/.test(pwd);
-    const hasLower = /[a-z]/.test(pwd);
-    const longEnough = pwd.length >= 6;
-    return hasUpper && hasLower && longEnough;
-  };
-
+  const validatePassword = (pwd) =>
+    /[A-Z]/.test(pwd) && /[a-z]/.test(pwd) && pwd.length >= 6;
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, email, password, photoURL } = form;
-
-    if (!name || !email || !password) {
-      toast.error("Please fill all required fields.");
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      toast.error(
-        "Password must have uppercase, lowercase and be at least 6 characters."
+    if (!form.name || !form.email || !form.password || !form.photoURL)
+      return toast.error("All fields required");
+    if (!validatePassword(form.password))
+      return toast.error(
+        "Password must have uppercase, lowercase, min 6 characters"
       );
-      return;
-    }
 
     try {
       setLoading(true);
-      await register(email, password, { displayName: name, photoURL });
+      await register(form.email, form.password, form.name, form.photoURL);
       toast.success("Registered successfully!");
-      navigate("/login"); // redirect to login after registration
+      navigate("/upcoming-events");
     } catch (err) {
-      console.error(err);
       toast.error(err?.message || "Registration failed.");
     } finally {
       setLoading(false);
@@ -59,84 +44,56 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Create Account
+          Create account
         </h2>
-        <p className="text-sm text-gray-500 mb-6">
-          Sign up to manage and join events
-        </p>
-
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Name
-            </label>
-            <input
-              name="name"
-              type="text"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none"
-              placeholder="Your name"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Photo URL
-            </label>
-            <input
-              name="photoURL"
-              type="text"
-              value={form.photoURL}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none"
-              placeholder="Optional"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-300 outline-none"
-              placeholder="At least 6 chars, Upper & Lower case"
-            />
-          </div>
-
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={form.name}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+          <input
+            type="text"
+            name="photoURL"
+            placeholder="Photo URL"
+            value={form.photoURL}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+            required
+          />
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
+            className="w-full bg-blue-500 text-white p-2 rounded"
           >
             {loading ? "Registering..." : "Register"}
           </button>
         </form>
-
         <p className="text-sm text-gray-500 mt-4 text-center">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:underline">
+          <Link to="/login" className="text-blue-500">
             Login
           </Link>
         </p>

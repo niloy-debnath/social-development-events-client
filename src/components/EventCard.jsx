@@ -1,30 +1,26 @@
 import { Link } from "react-router";
 
 const EventCard = ({ event }) => {
-  return (
-    <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition p-4 flex flex-col">
-      <img
-        src={event.thumbnail}
-        alt={event.title}
-        className="w-full h-48 object-cover rounded-lg mb-4"
-      />
-      <h3 className="text-xl font-semibold text-gray-800 mb-1">
-        {event.title}
-      </h3>
-      <p className="text-sm text-gray-500 mb-2">{event.location}</p>
-      <p className="text-sm text-gray-600 mb-2">
-        <span className="font-medium text-gray-700">Type:</span> {event.type}
-      </p>
-      <p className="text-sm text-gray-600 mb-4">
-        <span className="font-medium text-gray-700">Date:</span> {event.date}
-      </p>
+  const { _id, title, location, eventType, date, thumbnail } = event;
 
-      <Link
-        to={`/events/${event.id}`}
-        className="mt-auto inline-block text-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-      >
-        View Event
-      </Link>
+  return (
+    <div className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      <img src={thumbnail} alt={title} className="h-48 w-full object-cover" />
+      <div className="p-4">
+        <h3 className="text-xl font-semibold mb-2">{title}</h3>
+        <p className="text-gray-600">📍 {location}</p>
+        <p className="text-gray-600">
+          🗓️ {new Date(date).toLocaleDateString()}
+        </p>
+        <p className="text-gray-600">🏷️ Type: {eventType}</p>
+
+        <Link
+          to={`/event/${_id}`}
+          className="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          View Event
+        </Link>
+      </div>
     </div>
   );
 };

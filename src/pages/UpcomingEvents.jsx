@@ -1,35 +1,33 @@
+import React, { useEffect, useState } from "react";
 import EventCard from "../components/EventCard";
 
 const UpcomingEvents = () => {
-  const events = [
-    {
-      id: 1,
-      title: "Tree Plantation in Hossainpur 🌱",
-      location: "Kishoreganj",
-      type: "Plantation",
-      date: "2025-12-01",
-      thumbnail: "https://i.ibb.co/S3P3D7T/tree-plantation.jpg",
-    },
-    {
-      id: 2,
-      title: "Road Cleaning Drive 🧹",
-      location: "Mirpur 10, Dhaka",
-      type: "Cleanup",
-      date: "2025-11-20",
-      thumbnail: "https://i.ibb.co/4TmR8wm/road-cleaning.jpg",
-    },
-    {
-      id: 3,
-      title: "Child Education Workshop 📚",
-      location: "Gazipur",
-      type: "Education",
-      date: "2025-12-05",
-      thumbnail:
-        "https://upload.wikimedia.org/wikipedia/commons/f/fa/10_years_old_Dipa_and_12_years_old_Laboni_study_in_class_2_at_%22Unique_Child_learning_Center%22%2C_Mirmur-Dhaka%2C_Bangladesh.jpg",
-    },
-  ];
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Filter future events (for demo purpose, assuming all are upcoming)
+  // ✅ Fetch data from backend when the component loads
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/events");
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setEvents(data);
+        } else {
+          console.error("Unexpected response:", data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  // ✅ Filter only upcoming (future) events
   const today = new Date();
   const upcoming = events.filter((e) => new Date(e.date) >= today);
 
@@ -40,10 +38,12 @@ const UpcomingEvents = () => {
           Upcoming Events
         </h2>
 
-        {upcoming.length > 0 ? (
+        {loading ? (
+          <p className="text-center text-gray-600">Loading events...</p>
+        ) : upcoming.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {upcoming.map((event) => (
-              <EventCard key={event.id} event={event} />
+              <EventCard key={event._id} event={event} />
             ))}
           </div>
         ) : (

@@ -5,6 +5,11 @@ import MainLayout from "../Layout/MainLayout";
 import Login from "../pages/Login";
 import UpcomingEvents from "../pages/UpcomingEvents";
 import Register from "../pages/Register";
+import PrivateRoute from "./PrivateRoute";
+import CreateEvent from "../pages/CreateEvent";
+import ManageEvents from "../pages/ManageEvents";
+import JoinedEvent from "../pages/JoinedEvent";
+import EventDetails from "../pages/EventDetails";
 
 export const router = createBrowserRouter([
   {
@@ -24,8 +29,36 @@ export const router = createBrowserRouter([
         element: <Register></Register>,
       },
       {
+        path: "/create-event",
+        element: (
+          <PrivateRoute>
+            <CreateEvent />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/manage-events",
+        element: (
+          <PrivateRoute>
+            <ManageEvents></ManageEvents>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/joined-events",
+        element: (
+          <PrivateRoute>
+            <JoinedEvent></JoinedEvent>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/upcoming-events",
         element: <UpcomingEvents></UpcomingEvents>,
+      },
+      {
+        path: "/event/:id",
+        element: <EventDetails></EventDetails>,
       },
     ],
   },
