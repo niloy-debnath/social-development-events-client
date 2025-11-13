@@ -43,19 +43,27 @@ const JoinedEvents = () => {
 
     try {
       const res = await fetch("http://localhost:5000/events/leave", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventId, userEmail: user.email }),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventId,
+          userEmail: user.email,
+        }),
       });
 
       const data = await res.json();
+      console.log("🧩 Server response:", data); // <== Add this line for debugging
+
       if (data.success) {
         toast.success("You left the event.");
         setEvents((prev) => prev.filter((e) => e._id !== eventId));
       } else {
         toast.error(data.message);
       }
-    } catch {
+    } catch (err) {
+      console.error("❌ Error leaving event:", err);
       toast.error("Error leaving event.");
     }
   };
@@ -104,7 +112,7 @@ const JoinedEvents = () => {
               <p className="text-gray-600 mb-3">🏷️ {event.eventType}</p>
 
               <button
-                onClick={() => handleLeave(event._id)}
+                onClick={() => handleLeave(event._id.toString())}
                 className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
               >
                 Leave Event
