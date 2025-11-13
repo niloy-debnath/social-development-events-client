@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Links } from "react-router";
+import { Link } from "react-router";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -11,8 +11,14 @@ const Navbar = () => {
   return (
     <nav className="flex justify-between items-center bg-white px-6 py-3 shadow-md">
       {/* App Logo/Name */}
-      <Link to="/" className="text-2xl font-bold text-blue-600">
-        Events Tracker
+
+      <Link to="/" className="flex items-center">
+        <img
+          src="https://i.ibb.co.com/wZtNBY1k/logo-dark-removebg-preview-1.png"
+          alt="App Logo"
+          className="w-[80px]"
+        />
+        <h1 className="text-2xl font-bold text-blue-600">Event Tracker</h1>
       </Link>
 
       {/* Navbar Links */}
