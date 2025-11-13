@@ -9,10 +9,10 @@ const EventCard = ({ event }) => {
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-gray-600">📍 {location}</p>
+        <p className="text-gray-600">🏷️ Type: {eventType}</p>
         <p className="text-gray-600">
           🗓️ {new Date(date).toLocaleDateString()}
         </p>
-        <p className="text-gray-600">🏷️ Type: {eventType}</p>
 
         <Link
           to={`/event/${_id}`}

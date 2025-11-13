@@ -10,6 +10,7 @@ import CreateEvent from "../pages/CreateEvent";
 import ManageEvents from "../pages/ManageEvents";
 import JoinedEvent from "../pages/JoinedEvent";
 import EventDetails from "../pages/EventDetails";
+import JoinedEvents from "../pages/JoinedEvents";
 
 export const router = createBrowserRouter([
   {
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
         path: "/joined-events",
         element: (
           <PrivateRoute>
-            <JoinedEvent></JoinedEvent>
+            <JoinedEvents></JoinedEvents>
           </PrivateRoute>
         ),
       },

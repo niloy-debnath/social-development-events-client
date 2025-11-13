@@ -1,22 +1,25 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { AuthContext } from "../Context/AuthContext";
 import { toast } from "react-toastify";
 
 const EventDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [event, setEvent] = useState(null);
+  const [joined, setJoined] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  // ===== Fetch Event =====
   useEffect(() => {
     const fetchEvent = async () => {
       try {
         const res = await fetch(`http://localhost:5000/events/${id}`);
         const data = await res.json();
         setEvent(data);
-      } catch (error) {
-        console.error("Failed to load event details:", error);
+      } catch {
+        toast.error("Failed to load event details.");
       } finally {
         setLoading(false);
       }
@@ -24,6 +27,20 @@ const EventDetails = () => {
     fetchEvent();
   }, [id]);
 
+  // ===== Check Join Status =====
+  useEffect(() => {
+    const checkJoin = async () => {
+      if (!user) return;
+      const res = await fetch(
+        `http://localhost:5000/events/join/check?eventId=${id}&userEmail=${user.email}`
+      );
+      const data = await res.json();
+      setJoined(data.joined);
+    };
+    checkJoin();
+  }, [id, user]);
+
+  // ===== Handle Join =====
   const handleJoin = async () => {
     if (!user) {
       toast.error("Please login first to join events.");
@@ -37,10 +54,16 @@ const EventDetails = () => {
         body: JSON.stringify({ eventId: event._id, userEmail: user.email }),
       });
       const data = await res.json();
-      if (data.success) toast.success(data.message);
-      else toast.error(data.message);
-    } catch (err) {
-      toast.error("Failed to join event.");
+
+      if (data.success) {
+        toast.success("You joined this event!");
+        setJoined(true);
+        setTimeout(() => navigate("/joined-events"), 1000);
+      } else {
+        toast.error(data.message);
+      }
+    } catch {
+      toast.error("Error joining event.");
     }
   };
 
@@ -56,7 +79,7 @@ const EventDetails = () => {
       />
       <h2 className="text-3xl font-bold mb-3">{event.title}</h2>
       <p className="text-gray-600 mb-2">📍 {event.location}</p>
-      <p className="text-gray-600 mb-2">🏷️ Type: {event.eventType}</p>
+      <p className="text-gray-600 mb-2">🏷️ {event.eventType}</p>
       <p className="text-gray-600 mb-2">
         🗓️ {new Date(event.date).toLocaleDateString()}
       </p>
@@ -64,9 +87,14 @@ const EventDetails = () => {
 
       <button
         onClick={handleJoin}
-        className="mt-6 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+        disabled={joined}
+        className={`mt-6 px-6 py-2 rounded-lg transition text-white ${
+          joined
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-green-600 hover:bg-green-700"
+        }`}
       >
-        Join Event
+        {joined ? "Already Joined" : "Join Event"}
       </button>
     </div>
   );
