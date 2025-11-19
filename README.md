@@ -1,16 +1,151 @@
-# React + Vite
+# Event Tracker
+A web which connects people for good reason...
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [About the Project](#about-the-project)
+- [Project Overview](#project-overview)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Dependencies](#dependencies)
+- [Installation️ & Setup](#installation--setup)
+- [Folder Structure](#folder-structure)
+- [Contributions](#contributions)
+- [How to Contribute](#how-to-contribute)
+- [License](#license)
+- [Contact](#contact)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## About the Project 
+Social Development Events Platform is a modern, community-focused web application where users can explore social events such as:
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Tree plantation
+
+- Road cleaning
+
+- Donation drives
+
+- Child education programs
+
+- Community awareness campaigns
+
+Users can register, join events, create events, update/edit their event listings, manage their profiles, and interact with a clean, animated UI built with modern tools like Framer Motion, Firebase, React Router, and Tailwind.
+---
+
+## Project Overview  
+This platform aims to encourage social engagement by allowing users to:
+
+- Discover meaningful events around them
+
+- Join events to contribute directly
+
+- Create new events to lead initiatives
+
+- Manage and update event details
+
+- Access private dashboards and authenticated routes
+
+- You may include screenshots or architecture diagrams here if you want.
+
+---
+
+## Key Features  
+- **Responsive Home Page**: Hero banner, featured events, and interactive sections
+
+- **User Authentication**: Firebase email/password login and Google login
+
+- **Event Details Page**: Complete event information with Join button
+
+- **All Events Page**: Search, filter, and grid layout for all events
+
+- **My Events**: Users can track joined events, view details, and manage them
+
+- **Create New Event**: Authenticated users can add events with full details
+
+- **Update/Delete Events**: Manage events created by the user
+
+- **Private Routes**: Only logged-in users can create/join/manage events
+
+- **Modern UI/UX**: Tailwind + DaisyUI + Framer Motion animations
+
+- **Dynamic Page Titles**: Each route shows a relevant title
+
+- **Fully Responsive**: Optimized for all screens — mobile, tablet, desktop
+
+---
+
+## Tech Stack  
+**Frontend:** React.js · React Router · Tailwind CSS · DaisyUI · Framer Motion · React Icons
+
+**Backend:** Node.js · Express.js · MongoDB  
+**Tools:** Git · VS Code · Firebase · JWT
+
+---
+
+## Dependencies  
+List required dependencies or major libraries:
+
+```json
+{
+  "react": "latest",
+  "react-router": "latest",
+  "firebase": "latest",
+  "framer-motion": "latest",
+  "react-icons": "latest",
+  "tailwindcss": "latest",
+  "daisyui": "latest"
+}
+
+```
+
+---
+
+## Installation️ & Setup
+1. Clone the repo and install dependencies:
+
+```bash
+git clone https://github.com/niloy-debnath/event-tracker
+cd event-tracker
+npm install
+
+```
+
+2. Set up environment variables by creating a `.env` file in the root directory:
+
+```env
+DATABASE_URL=your_database_url
+JWT_SECRET=your_jwt_secret
+```
+
+3. Run the application:
+
+```bash
+npm run dev
+```
+
+---
+
+
+
+```plaintext
+
+```
+
+---
+
+## Contributions (Optional)
+If this is a team project, mention contributors.
+
+| Name            | Role                | Contributions                            |  
+|-----------------|---------------------|------------------------------------------|  
+| Niloy Debnath       | Author               | Design,Frontend,Backend                            |  
+
+---
+
+## Contact
+
+**Live URL:** [Live Site](https://yourdomain.com/)
